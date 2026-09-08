@@ -13,10 +13,11 @@ ABossEnemyShapeBase::ABossEnemyShapeBase()
 	PrimaryActorTick.bCanEverTick = true;
 
     Root = CreateDefaultSubobject<USphereComponent>("Root");
-    Root->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    Root->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     Root->SetCollisionProfileName("OverlapAll"); // needs to ignore everything but player
     Root->SetGenerateOverlapEvents(true);
     Root->OnComponentBeginOverlap.AddDynamic(this, &ABossEnemyShapeBase::OnOverlapBegin);
+    Root->OnComponentEndOverlap.AddDynamic(this, &ABossEnemyShapeBase::OnOverlapEnd);
     SetRootComponent(Root);
 
     EnemyBody = CreateDefaultSubobject<UStaticMeshComponent>("Enemy");
@@ -91,6 +92,11 @@ void ABossEnemyShapeBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AA
 
 void ABossEnemyShapeBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+    UE_LOG(LogTemp, Warning,
+        TEXT("END OVERLAP: %s / %s"),
+        *GetNameSafe(OtherActor),
+        *GetNameSafe(OtherComp));
+
     if (OtherActor)
     {
         APlayerShape* Player = Cast<APlayerShape>(OtherActor);
@@ -104,7 +110,16 @@ void ABossEnemyShapeBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AAct
 
 void ABossEnemyShapeBase::ReceiveDamage(float inDamage)
 {
+    UE_LOG(LogTemp, Warning,
+        TEXT("PRE-HIT BOSS: HP %f / dmg %f"),
+        Health,
+        inDamage);
+
     Health -= inDamage;
+
+    UE_LOG(LogTemp, Warning,
+        TEXT("POST-HIT BOSS HP: %f"),
+        Health);
 
     if (Health <= 0.0f)
     {

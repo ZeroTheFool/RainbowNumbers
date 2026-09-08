@@ -54,7 +54,7 @@ void AExperienceOrbBase::Tick(float DeltaTime)
         if ((CollectorLocation - CurrentLocation).Length() < 20.0f)
         {
             // should just hide and disable interactions and use object pooling for this
-            UE_LOG(LogTemp, Warning, TEXT("Enemy Location: %f , %f"), GetActorLocation().X, GetActorLocation().Y);
+            //UE_LOG(LogTemp, Warning, TEXT("Enemy Location: %f , %f"), GetActorLocation().X, GetActorLocation().Y);
             SetInUse(false);
         }
     }

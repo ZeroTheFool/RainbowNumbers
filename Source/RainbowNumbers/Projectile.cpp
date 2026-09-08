@@ -3,6 +3,7 @@
 
 #include "Projectile.h"
 #include "EnemyShapeBase.h"
+#include "BossEnemyShapeBase.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -52,11 +53,14 @@ void AProjectile::SetInUse(bool inUse)
 
 void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
 {
-    AEnemyShapeBase* enemy = Cast<AEnemyShapeBase>(OtherActor);
-    if (enemy)
+    if (AEnemyShapeBase* Enemy = Cast<AEnemyShapeBase>(OtherActor))
     {
-        enemy->ReceiveDamage(BaseDamage);
+        Enemy->ReceiveDamage(BaseDamage);
 
         SetInUse(false);
+    }
+    else if (ABossEnemyShapeBase* Boss = Cast<ABossEnemyShapeBase>(OtherActor))
+    {
+        Boss->ReceiveDamage(BaseDamage);
     }
 }

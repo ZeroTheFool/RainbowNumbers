@@ -21,6 +21,7 @@ AEnemyShapeBase::AEnemyShapeBase()
     Root->SetCollisionProfileName("OverlapAll"); // needs to ignore everything but player
     Root->SetGenerateOverlapEvents(true);
     Root->OnComponentBeginOverlap.AddDynamic(this, &AEnemyShapeBase::OnOverlapBegin);
+    Root->OnComponentEndOverlap.AddDynamic(this, &AEnemyShapeBase::OnOverlapEnd);
     SetRootComponent(Root);
 
     EnemyBody = CreateDefaultSubobject<UStaticMeshComponent>("Enemy");

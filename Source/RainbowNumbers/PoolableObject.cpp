@@ -25,11 +25,11 @@ void APoolableObject::SetInUse(bool inUse)
     // set tick
     SetActorTickEnabled(bInUse);
 
-    UE_LOG(LogTemp, Warning,
-        TEXT("DEACTIVATE %s | Time=%.3f | TimerRemaining=%.3f"),
-        *GetName(),
-        GetWorld()->GetTimeSeconds(),
-        GetWorld()->GetTimerManager().GetTimerRemaining(LifeTime_Timer));
+    //UE_LOG(LogTemp, Warning,
+    //    TEXT("DEACTIVATE %s | Time=%.3f | TimerRemaining=%.3f"),
+    //    *GetName(),
+    //    GetWorld()->GetTimeSeconds(),
+    //    GetWorld()->GetTimerManager().GetTimerRemaining(LifeTime_Timer));
 
     GetWorldTimerManager().ClearTimer(LifeTime_Timer);
 
@@ -42,7 +42,7 @@ void APoolableObject::SetInUse(bool inUse)
             TimeUntilInactive,
             false);
 
-        UE_LOG(LogTemp, Warning, TEXT("TimeToLive On Spawn: %f, %s"), TimeUntilInactive, *GetName());
+        //UE_LOG(LogTemp, Warning, TEXT("TimeToLive On Spawn: %f, %s"), TimeUntilInactive, *GetName());
     }
     else
     {

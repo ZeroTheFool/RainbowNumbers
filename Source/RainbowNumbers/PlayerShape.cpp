@@ -3,6 +3,7 @@
 
 #include "PlayerShape.h"
 #include "EnemyShapeBase.h"
+#include "BossEnemyShapeBase.h"
 #include "ExperienceOrbBase.h"
 #include "CollectorManager.h"
 #include "ExperienceCollectorBase.h"
@@ -282,20 +283,19 @@ void APlayerShape::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 {
     if (OtherActor)
     {
-        AEnemyShapeBase* Enemy = Cast<AEnemyShapeBase>(OtherActor);
-        if (Enemy)
+        if (AEnemyShapeBase* Enemy = Cast<AEnemyShapeBase>(OtherActor))
         {
             // this is to take and deal damage
             Enemy->ReceiveDamage(CurrentDamage);
         }
-        else
+        else if (ABossEnemyShapeBase* Boss = Cast<ABossEnemyShapeBase>(OtherActor))
         {
-            AExperienceOrbBase* Orb = Cast<AExperienceOrbBase>(OtherActor);
-            if (Orb)
-            {
-                AddOrb(Orb->CheckColor());
-                Orb->SetCollected();
-            }
+            Boss->ReceiveDamage(CurrentDamage);
+        }
+        else if (AExperienceOrbBase* Orb = Cast<AExperienceOrbBase>(OtherActor))
+        {
+            AddOrb(Orb->CheckColor());
+            Orb->SetCollected();
         }
     }
 }
